@@ -1,0 +1,16 @@
+[tool.pytest.ini_options]
+pythonpath = [
+    "."
+]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+
+[project]
+name = "ai-agent-python"
+version = "1.0.0"
+description = "Backend para un agente de tutoría inteligente"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools>=42.0", "wheel"]
+build-backend = "setuptools.build_meta"

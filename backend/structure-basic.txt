@@ -1,0 +1,98 @@
+backend/
+├── app/
+│   ├── api/
+│   │   ├── v1/
+│   │   │   ├── endpoints/
+│   │   │   │   ├── chat.py          # Gestión de chat con session_id
+│   │   │   │   ├── upload.py        # Gestión de subida de imágenes
+│   │   │   │   ├── generate.py      # Generación de ejercicios
+│   │   │   │   └── visualize.py     # Visualizaciones con matplotlib
+│   │   │   ├── error_handlers.py    # Gestión centralizada de errores
+│   │   │   └── schemas.py           # Modelos Pydantic compartidos
+│   ├── core/
+│   │   ├── config.py                # Configuración general (claves API)
+│   │   ├── memory.py                # Memoria y contexto de usuario
+│   │   ├── prompts.py               # Plantillas para LLM
+│   │   └── logging_config.py        # Configuración de logs
+│   ├── services/
+│   │   ├── llm_service.py           # Integración con OpenAI
+│   │   ├── embedding_service.py     # Gestión de embeddings
+│   │   ├── exercise_generator.py    # Generador de ejercicios
+│   │   └── graph_service.py         # Generación de gráficos
+│   ├── models/
+│   │   ├── chat.py                  # Modelos de datos
+│   ├── utils/
+│   │   ├── image_processing.py      # Procesamiento de imágenes
+│   ├── main.py                      # Aplicación FastAPI principal
+│
+├── tests/                           # Pruebas unitarias
+│   ├── services/
+│   │   └── test_exercise_generator.py
+│   └── __init__.py
+├── requirements.txt                 # Dependencias
+├── README.md                        # Documentación
+├── .env                            # Variables de entorno
+└── .gitignore                      # Archivos ignorados
+
+Características agregadas:
+1. Manejo de errores centralizado en error_handlers.py
+2. Sistema de logging configurado en logging_config.py
+3. Manejo de sesiones en el chat (session_id)
+4. Validación de tipos de archivo en upload.py
+5. Generación de gráficos con matplotlib en visualize.py
+6. Modelos Pydantic centralizados en schemas.py
+7. Tests unitarios preparados en /tests
+8. Configuración del proyecto en pyproject.toml
+
+Tecnologías de soporte:
+FastAPI: Framework web rápido
+Uvicorn: Servidor ASGI
+Pydantic: Validación de datos
+OpenAI SDK: Integración con GPT
+Matplotlib: Generación de gráficos
+Python-dotenv: Manejo de variables de entorno
+Pytest: Framework de testing
+
+Explicación rápida de cada parte
+api/v1/endpoints/:
+Define las rutas, por ejemplo /chat, /upload, /visualize.
+
+core/:
+Configuración general, memoria y plantillas de prompts.
+
+services/:
+Lógica que se comunica con OpenAI, DB vectorial y generación de gráficas.
+
+models/:
+Defines las estructuras de datos (Pydantic models) que recibe o envía tu API.
+
+utils/:
+Cosas auxiliares como procesar imágenes.
+
+main.py:
+Archivo principal que crea la instancia de FastAPI y monta las rutas.
+
+Flujo general
+Usuario envía pregunta o imagen → POST /chat o POST /upload
+
+FastAPI recibe → pasa a LangChain / Semantic Kernel o procesamiento interno
+
+Consulta a LLM (GPT) o consulta la memoria/vector DB
+
+Genera respuesta paso a paso + visualizaciones
+
+Responde al usuario.
+
+Tecnologías de soporte
+FastAPI: framework de backend.
+
+Uvicorn: servidor ASGI para correr FastAPI.
+
+LangChain o Semantic Kernel: para orquestar memoria y prompts.
+
+OpenAI SDK: para llamadas a GPT.
+
+ChromaDB o FAISS: si usas búsqueda semántica.
+
+Pydantic: validación de datos.
+
