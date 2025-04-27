@@ -7,6 +7,7 @@ from app.db.crud.exercise import create_exercise, get_user_exercises
 from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
+from app.services.exercise_generator import generate_exercise
 
 router = APIRouter()
 
@@ -55,3 +56,13 @@ def list_exercises(user_id: int, db: Session = Depends(get_db)):
         return exercises
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error al listar ejercicios: {str(e)}")
+
+
+# Añadir el nuevo endpoint de generación
+@router.post("/generate", summary="Generar nuevo ejercicio", tags=["Exercises"])
+async def generate_exercise_endpoint(subject: str, difficulty: str, include_solution: bool = True):
+    try:
+        exercise = await generate_exercise(subject, difficulty, include_solution)
+        return {"generated_exercise": exercise}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error al generar ejercicio: {str(e)}")

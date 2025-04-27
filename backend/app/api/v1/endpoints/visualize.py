@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 
-router = APIRouter()  # Esta línea es crucial - faltaba el router
+router = APIRouter() 
 
 @router.get("/")
 async def visualize_expression(expression: str, x_range: str):

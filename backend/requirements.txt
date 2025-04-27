@@ -1,0 +1,8 @@
+# ... otras dependencias ...
+pytest
+pytest-asyncio  # Para pruebas async
+httpx          # Requerido por TestClient
+# sqlalchemy    # Si no está ya
+# alembic       # Si usas migraciones para la DB de prueba
+# pytest-cov    # Para medir cobertura (opcional)
+# ... otras dependencias de prueba (ej. para mocking) ...

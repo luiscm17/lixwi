@@ -1,5 +1,7 @@
-backend/
+/backend/
 ├── app/
+│   ├── agents/
+│   │   └── agent_manager.py         # agent
 │   ├── api/
 │   │   ├── v1/
 │   │   │   ├── endpoints/
@@ -24,7 +26,14 @@ backend/
 │   ├── utils/
 │   │   ├── image_processing.py      # Procesamiento de imágenes
 │   ├── main.py                      # Aplicación FastAPI principal
-│
+│   ├── plugins/
+│   │   ├── graph_generator/
+│   │   │   ├── skprompt.json        # Configuración del plugin
+│   │   │   └── prompt.txt           # Prompt real que usa el LLM
+│   │   ├── exercise_creator/
+│   │   │   ├── skprompt.json
+│   │   │   └── prompt.txt
+│   │   └── (otros plugins futuros)
 ├── tests/                           # Pruebas unitarias
 │   ├── services/
 │   │   └── test_exercise_generator.py

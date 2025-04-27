@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 from dotenv import load_dotenv
+from sqlalchemy.orm import declarative_base  # Nueva importación
 
 # Cargar variables de entorno (.env)
 load_dotenv()
@@ -19,7 +20,7 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Base para heredar modelos
-Base = declarative_base()
+Base = declarative_base()  # Usar la nueva forma
 
 # Función para obtener la sesión de DB
 def get_db():

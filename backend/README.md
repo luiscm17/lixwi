@@ -5,36 +5,52 @@ Backend para un sistema de tutoría inteligente que utiliza modelos de lenguaje 
 
 ## Características Principales ✨
 - Chat inteligente con manejo de sesiones
+- Sistema de plugins extensible
+- Generación de ejercicios matemáticos
 - Procesamiento y análisis de imágenes
-- Generación de visualizaciones y gráficos
-- Sistema de logging robusto
-- Manejo centralizado de errores
+- Visualizaciones gráficas interactivas
+- Sistema de logging centralizado
+- Manejo de errores unificado
 - Memoria de conversación por usuario
 
 ## Tecnologías 🛠
-- **FastAPI**: Framework web rápido y moderno
+- **FastAPI**: Framework web moderno
+- **SQLAlchemy**: ORM para gestión de base de datos
 - **Uvicorn**: Servidor ASGI de alto rendimiento
 - **GitHub Models**: Integración con modelos de IA
 - **Pydantic**: Validación de datos y serialización
 - **Matplotlib**: Generación de gráficos
+- **Pillow**: Procesamiento de imágenes
 - **Python-dotenv**: Gestión de variables de entorno
 - **Pytest**: Framework de testing
 
 ## Estructura del Proyecto 📁
 backend/
 ├── app/
+│   ├── agents/
+│   │   └── agent_manager.py
 │   ├── api/
 │   │   ├── v1/
-│   │   │   ├── endpoints/       # Rutas de la API
-│   │   │   ├── error_handlers.py
-│   │   │   └── schemas.py
-│   ├── core/                    # Configuración central
-│   ├── services/                # Lógica de negocio
-│   ├── models/                  # Modelos de datos
-│   ├── utils/                   # Utilidades
-│   └── main.py                  # Punto de entrada
-├── tests/                       # Pruebas unitarias
-└── requirements.txt             # Dependencias
+│   │   │   ├── endpoints/
+│   │   │   │   ├── agent.py
+│   │   │   │   ├── chat.py
+│   │   │   │   ├── exercise.py
+│   │   │   │   ├── upload.py
+│   │   │   │   └── visualize.py
+│   ├── core/
+│   │   ├── config.py
+│   │   └── logging_config.py
+│   ├── plugins/
+│   │   ├── exercise_creator/
+│   │   └── graph_generator/
+│   ├── services/
+│   │   ├── exercise_generator.py
+│   │   └── llm_service.py
+│   └── main.py
+├── tests/
+│   ├── integration/
+│   └── unit/
+└── requirements.txt
 
 ## Instalación 🔧
 
@@ -45,8 +61,8 @@ backend/
     ```
 2. Crear entorno virtual:
     ```bash
-    git clone https://github.com/yourusername/ai-agent-python.git
-    cd ai-agent-python/backend
+    python -m venv venv
+    venv\Scripts\activate
     ```
 3. Instalar dependencias:
     ```bash
@@ -69,19 +85,21 @@ backend/
 - ReDoc: http://localhost:8000/redoc
 - 
 ## Endpoints Principales 🌐
+
+### Agentes IA
+```http
+POST /api/v1/agent/execute
+```
+### Ejercicios Matemáticos
+```http
+POST /api/v1/exercises/
+```
 ### Chat
 ```http
 POST /api/v1/chat
 ```
 
-Maneja interacciones de chat con el tutor IA, incluyendo manejo de sesiones y contexto.
-
-### Visualizaciones
-```http
-GET /api/v1/visualize
-```
-
-Genera visualizaciones y gráficos explicativos.
+Maneja interacciones de chat con Lixwi, incluyendo manejo de sesiones y contexto.
 
 ### Subida de Archivos
 ```http
@@ -91,15 +109,18 @@ POST /api/v1/upload
 Procesa imágenes y documentos.
 
 ## Desarrollo 👨‍💻
-### Pruebas
+### Ejecutar Tests
 ```bash
 pytest
+```
+### Iniciar Servidor de Desarrollo
+```bash
+uvicorn app.main:app --reload
 ```
 
 ### Logging
 Los logs se guardan en `app.log` y también se muestran en consola. Configuración en `core/logging_config.py`.
 
-### Manejo de Errores
 ### Manejo de Errores
 Sistema centralizado de manejo de errores en `api/v1/error_handlers.py`.
 

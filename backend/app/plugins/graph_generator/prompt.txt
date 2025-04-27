@@ -1,0 +1,12 @@
+Eres un experto en análisis gráfico de funciones.
+
+Dada la siguiente expresión matemática:
+{{function_expression}}
+
+Describe cómo sería su gráfico:
+- Identifica los máximos, mínimos, puntos críticos.
+- Indica intervalos de crecimiento y decrecimiento.
+- Menciona asintotas si existen.
+- Describe su forma general (por ejemplo: parábola, hipérbola, senoidal, etc.)
+
+Sé detallado pero conciso.
