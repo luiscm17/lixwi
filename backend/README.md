@@ -1,4 +1,4 @@
-# IA Tutor API - Backend 🚀
+# LIXWI API - Backend 🚀
 
 ## Descripción
 Backend para un sistema de tutoría inteligente que utiliza modelos de lenguaje avanzados para proporcionar asistencia educativa personalizada a estudiantes de ingeniería.

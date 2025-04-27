@@ -7,6 +7,9 @@ from app.core.config import settings  # Asume que config.py tiene una clase `Set
 from app.core.logging_config import setup_logging
 from app.api.v1 import error_handlers
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from app.api.v1.endpoints import user
+from app.api.v1.endpoints import chat_history
+from app.api.v1.endpoints import exercise
 
 # Configura logging primero
 setup_logging()
@@ -41,6 +44,9 @@ api_router.include_router(chat.router, prefix="/chat", tags=["Chat"])
 api_router.include_router(upload.router, prefix="/upload", tags=["Upload"])
 api_router.include_router(visualize.router, prefix="/visualize", tags=["Visualize"])
 api_router.include_router(generate.router, prefix="/generate", tags=["Generate"]) 
+api_router.include_router(user.router, prefix="/users", tags=["Users"]) 
+api_router.include_router(chat_history.router, prefix="/chat_history", tags=["Chat History"])
+api_router.include_router(exercise.router, prefix="/exercise", tags=["Exercise"])
 app.include_router(api_router)
 
 # --- Ruta de Salud ---
