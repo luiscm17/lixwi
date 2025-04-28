@@ -26,10 +26,12 @@ app = FastAPI(
 # --- Middlewares ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS.split(","),  # Ej: ["http://localhost:3000"]
+    allow_origins=settings.CORS_ORIGINS.split(","),
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
+    expose_headers=["Content-Length"],
+    max_age=600,
 )
 
 # --- Manejo de Errores ---
@@ -46,7 +48,7 @@ api_router.include_router(upload.router, prefix="/upload", tags=["Upload"])
 api_router.include_router(visualize.router, prefix="/visualize", tags=["Visualize"])
 api_router.include_router(user.router, prefix="/users", tags=["Users"]) 
 api_router.include_router(chat_history.router, prefix="/chat_history", tags=["Chat History"])
-api_router.include_router(exercise.router, prefix="/exercises", tags=["Exercises"])  # Cambiado a /exercises para mantener consistencia
+api_router.include_router(exercise.router, prefix="/exercises", tags=["Exercises"])  
 api_router.include_router(agent.router, prefix="/agent", tags=["Agent"])    
 app.include_router(api_router)
 
@@ -59,7 +61,7 @@ def health_check():
 @app.get("/")
 def root():
     return {
-        "message": "Bienvenido a IA Tutor API 🚀", 
+        "message": "Bienvenido a Lixwi AI 🚀", 
         "docs": "/docs",
         "endpoints": ["/api/v1/chat", "/api/v1/upload", "/api/v1/visualize"]
     }

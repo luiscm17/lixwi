@@ -5,14 +5,16 @@ import os
 
 class Settings(BaseSettings):
     # Configuración de la API
-    API_VERSION: str = "1.0.0"
-    CORS_ORIGINS: str = "http://localhost:3000"
+    API_VERSION: str
+    CORS_ORIGINS: str
     
     # OpenAI
-    OPENAI_API_KEY: str = None
+    OPENAI_API_KEY: str | None = None
     
     # GitHub
     GITHUB_TOKEN: str | None = None
+    GITHUB_MODEL_ENDPOINT: str | None = None
+    GITHUB_MODEL_NAME: str | None = None
     
     # Rutas
     UPLOAD_DIR: str = str(Path(__file__).parent.parent / "tmp_uploads")

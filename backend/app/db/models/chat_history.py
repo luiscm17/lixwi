@@ -1,16 +1,16 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-from app.db.session import Base  # Importar Base desde session.py
+from app.db.session import Base
 
-class ChatHistory(Base):
-    __tablename__ = "chat_history"
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
     
     id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(String, nullable=False, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    question = Column(Text, nullable=False)
-    answer = Column(Text, nullable=False)
+    message = Column(Text, nullable=False)
+    role = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    # Relación
-    user = relationship("User", back_populates="chat_histories")
+    user = relationship("User", back_populates="chat_messages")

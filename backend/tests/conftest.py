@@ -5,29 +5,41 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from app.main import app
 from app.db.session import Base, get_db
+import os
+from dotenv import load_dotenv
 
-# Crear base de datos en memoria para pruebas
-SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+load_dotenv()
+
+SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL").replace("lixwi_db", "test_lixwi")
 
 @pytest.fixture(scope="session")
 def db_engine():
     engine = create_engine(
         SQLALCHEMY_DATABASE_URL,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
+        # Mantener algunas opciones útiles para pruebas
+        pool_pre_ping=True,
+        pool_size=5,
+        max_overflow=0
     )
+    # Crear todas las tablas para las pruebas
     Base.metadata.create_all(bind=engine)
-    return engine
+    yield engine
+    # Limpiar después de las pruebas
+    Base.metadata.drop_all(bind=engine)
 
 @pytest.fixture(scope="function")
 def db_session(db_engine):
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
-    db = TestingSessionLocal()
+    connection = db_engine.connect()
+    transaction = connection.begin()
+    SessionLocal = sessionmaker(bind=connection)
+    session = SessionLocal()
+    
     try:
-        yield db
+        yield session
     finally:
-        db.rollback()
-        db.close()
+        session.close()
+        transaction.rollback()
+        connection.close()
 
 @pytest.fixture(scope="function")
 def client(db_session):

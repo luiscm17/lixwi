@@ -1,46 +1,113 @@
-import pytest
-from app.core.memory import get_session_history, add_message_to_session
 from fastapi import APIRouter, HTTPException
 import numpy as np
 import matplotlib.pyplot as plt
-import io
-import base64
+import ast
+import re
 
-router = APIRouter() 
+router = APIRouter()
 
 @router.get("/")
-async def visualize_expression(expression: str, x_range: str):
+async def visualize_expression(expression: str, x_range: str, variable: str = "x"):
     try:
-        # Parsear el rango
-        start, end = map(float, x_range.split(","))
+        # Validar variable
+        if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', variable):
+            raise ValueError("El nombre de la variable debe ser un identificador válido")
+
+        # Validar que x_range tenga exactamente dos valores
+        parts = x_range.split(",")
+        if len(parts) != 2:
+            raise ValueError("x_range debe tener exactamente dos números separados por coma. Ejemplo: '0,10'.")
+
+        try:
+            start, end = map(float, parts)
+        except ValueError:
+            raise ValueError("Los valores del rango deben ser números válidos.")
         
-        # Generar puntos x
-        x = np.linspace(start, end, 100)
+        if start >= end:
+            raise ValueError("El valor inicial del rango debe ser menor que el final.")
         
-        # Evaluar la expresión (con seguridad)
-        y = eval(f"lambda x: {expression}")(x)
+        # Generar puntos para la variable
+        points = np.linspace(start, end, 100)
         
-        return {
-            "title": f"Gráfica de {expression}",
-            "x": x.tolist(),
-            "y": y.tolist()
+        # Definir funciones permitidas
+        allowed_names = {
+            variable: points,
+            'sin': np.sin,
+            'cos': np.cos,
+            'tan': np.tan,
+            'exp': np.exp,
+            'sqrt': np.sqrt,
+            'abs': abs,
+            'pi': np.pi,
+            'e': np.e,
+            'log': np.log,
+            'ln': np.log,
+            'log10': np.log10,
+            'x': points
         }
+        
+        # Diccionario de traducciones español-inglés
+        translations = {
+            'sen': 'sin',  # Mover 'sen' aquí
+            'seno': 'sin',
+            'coseno': 'cos',
+            'tangente': 'tan',
+            'tg': 'tan',
+            'raiz': 'sqrt',
+            'exponencial': 'exp',
+            'logaritmo': 'log',
+            'absoluto': 'abs'
+        }
+        
+        try:
+            # Preprocesar la expresión
+            expression = expression.lower().strip()
+            
+            # Reemplazar funciones en español
+            for esp, eng in translations.items():
+                expression = re.sub(r'\b' + esp + r'\b', eng, expression)
+            
+            # Manejar multiplicación implícita
+            # Reemplazar casos como "2x" por "2*x"
+            expression = re.sub(r'(\d+)([a-zA-Z])', r'\1*\2', expression)
+            # Reemplazar casos como "2(..." por "2*(..."
+            expression = re.sub(r'(\d+)\(', r'\1*(', expression)
+            # Reemplazar casos como ")2" por ")*2"
+            expression = re.sub(r'\)(\d+)', r')*\1', expression)
+            # Reemplazar casos como "x(" por "x*("
+            expression = re.sub(r'([a-zA-Z])\(', r'\1*(', expression)
+            # Reemplazar casos como ")x" por ")*x"
+            expression = re.sub(r'\)([a-zA-Z])', r')*\1', expression)
+            
+            # Reemplazar potencias
+            expression = expression.replace('^', '**')
+            
+            # Validar la expresión
+            tree = ast.parse(expression, mode='eval')
+            for node in ast.walk(tree):
+                if isinstance(node, ast.Name) and node.id not in allowed_names:
+                    raise ValueError(f"Función o variable no permitida: {node.id}")
+            
+            # Compilar y evaluar
+            code = compile(expression, "<string>", "eval")
+            y = eval(code, {"__builtins__": {}}, allowed_names)
+            
+            if not isinstance(y, np.ndarray):
+                raise ValueError("La expresión no generó resultados válidos")
+                
+            if np.any(np.isinf(y)) or np.any(np.isnan(y)):
+                raise ValueError("La expresión genera valores infinitos o indefinidos")
+                
+            return {
+                "title": f"Gráfica de {expression}",
+                "x": points.tolist(),
+                "y": y.tolist(),
+                "variable": variable
+            }
+        except Exception as e:
+            raise ValueError(f"Error al evaluar la expresión: {str(e)}")
+            
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@pytest.fixture(autouse=True)
-def clear_session():
-    # Limpiar la memoria antes de cada prueba
-    from app.core.memory import _sessions
-    _sessions.clear()
-
-def test_session_memory():
-    session_id = "test_session"
-    
-    # Prueba agregar mensaje
-    add_message_to_session(session_id, "user", "Hola")
-    history = get_session_history(session_id)
-    
-    assert len(history) == 1
-    assert history[0]["role"] == "user"
-    assert history[0]["content"] == "Hola"
+        raise HTTPException(status_code=500, detail="Error interno del servidor")

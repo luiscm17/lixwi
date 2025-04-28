@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 from app.services.exercise_generator import generate_exercise
+from enum import Enum
 
 router = APIRouter()
 
@@ -59,10 +60,36 @@ def list_exercises(user_id: int, db: Session = Depends(get_db)):
 
 
 # Añadir el nuevo endpoint de generación
-@router.post("/generate", summary="Generar nuevo ejercicio", tags=["Exercises"])
-async def generate_exercise_endpoint(subject: str, difficulty: str, include_solution: bool = True):
+from pydantic import BaseModel
+from typing import Optional
+
+class SubjectEnum(str, Enum):
+    MATEMATICAS = "matemáticas"
+    FISICA = "física"
+    QUIMICA = "química"
+    PROGRAMACION = "programación"
+
+class DifficultyEnum(str, Enum):
+    FACIL = "fácil"
+    MEDIO = "medio"
+    DIFICIL = "difícil"
+
+class ExerciseGenerateRequest(BaseModel):
+    subject: SubjectEnum
+    difficulty: DifficultyEnum
+    include_solution: Optional[bool] = False
+
+@router.post("/generate")
+async def generate_exercise_endpoint(request: ExerciseGenerateRequest):  # Renombrado para evitar conflicto
     try:
-        exercise = await generate_exercise(subject, difficulty, include_solution)
+        if not request.subject or not request.difficulty:
+            raise HTTPException(status_code=400, detail="Datos incompletos")
+            
+        exercise = await generate_exercise(  # Añadido await
+            request.subject, 
+            request.difficulty,
+            include_solution=request.include_solution
+        )
         return {"generated_exercise": exercise}
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error al generar ejercicio: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error al generar ejercicio: {str(e)}")

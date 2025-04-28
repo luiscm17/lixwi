@@ -1,0 +1,10 @@
+{
+    "name": "text_corrector",
+    "description": "Corrige errores de gramática, ortografía y redacción en un texto dado.",
+    "input_variables": [
+    {
+        "name": "texto",
+        "description": "El texto que necesita correcciones."
+    }
+    ]
+}

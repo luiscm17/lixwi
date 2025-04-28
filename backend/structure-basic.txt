@@ -1,13 +1,14 @@
 /backend/
 ├── app/
 │   ├── agents/
-│   │   └── agent_manager.py         # agent
+│   │   └── agent_manager.py         # Gestión de agentes IA
 │   ├── api/
 │   │   ├── v1/
 │   │   │   ├── endpoints/
+│   │   │   │   ├── agent.py         # Endpoints de agentes
 │   │   │   │   ├── chat.py          # Gestión de chat con session_id
+│   │   │   │   ├── exercise.py      # Gestión de ejercicios
 │   │   │   │   ├── upload.py        # Gestión de subida de imágenes
-│   │   │   │   ├── generate.py      # Generación de ejercicios
 │   │   │   │   └── visualize.py     # Visualizaciones con matplotlib
 │   │   │   ├── error_handlers.py    # Gestión centralizada de errores
 │   │   │   └── schemas.py           # Modelos Pydantic compartidos
@@ -16,51 +17,63 @@
 │   │   ├── memory.py                # Memoria y contexto de usuario
 │   │   ├── prompts.py               # Plantillas para LLM
 │   │   └── logging_config.py        # Configuración de logs
+│   ├── db/                          # Capa de base de datos
+│   │   ├── base.py                  # Configuración del ORM
+│   │   ├── session.py               # Manejo de sesiones DB
+│   │   ├── models/                  # Modelos SQLAlchemy
+│   │   │   ├── user.py
+│   │   │   ├── chat_history.py
+│   │   │   └── exercise.py
+│   │   └── crud/                    # Operaciones CRUD
+│   │       ├── user.py
+│   │       ├── chat_history.py
+│   │       └── exercise.py
 │   ├── services/
 │   │   ├── llm_service.py           # Integración con OpenAI
 │   │   ├── embedding_service.py     # Gestión de embeddings
 │   │   ├── exercise_generator.py    # Generador de ejercicios
-│   │   └── graph_service.py         # Generación de gráficos
+│   │   ├── graph_service.py         # Generación de gráficos
+│   │   └── image_processing.py      # Procesamiento de imágenes
 │   ├── models/
-│   │   ├── chat.py                  # Modelos de datos
+│   │   └── chat.py                  # Modelos Pydantic
 │   ├── utils/
-│   │   ├── image_processing.py      # Procesamiento de imágenes
-│   ├── main.py                      # Aplicación FastAPI principal
+│   │   └── validators.py            # Validaciones comunes
 │   ├── plugins/
 │   │   ├── graph_generator/
 │   │   │   ├── skprompt.json        # Configuración del plugin
-│   │   │   └── prompt.txt           # Prompt real que usa el LLM
-│   │   ├── exercise_creator/
-│   │   │   ├── skprompt.json
-│   │   │   └── prompt.txt
-│   │   └── (otros plugins futuros)
+│   │   │   └── prompt.txt           # Prompt del LLM
+│   │   └── exercise_creator/
+│   │       ├── skprompt.json
+│   │       └── prompt.txt
+│   └── main.py                      # Aplicación FastAPI principal
 ├── tests/                           # Pruebas unitarias
-│   ├── services/
-│   │   └── test_exercise_generator.py
-│   └── __init__.py
+│   ├── integration/                 # Pruebas de integración
+│   └── unit/                       # Pruebas unitarias
 ├── requirements.txt                 # Dependencias
+├── pyproject.toml                   # Configuración del proyecto
 ├── README.md                        # Documentación
-├── .env                            # Variables de entorno
-└── .gitignore                      # Archivos ignorados
+└── .env                            # Variables de entorno
 
-Características agregadas:
-1. Manejo de errores centralizado en error_handlers.py
-2. Sistema de logging configurado en logging_config.py
-3. Manejo de sesiones en el chat (session_id)
-4. Validación de tipos de archivo en upload.py
-5. Generación de gráficos con matplotlib en visualize.py
-6. Modelos Pydantic centralizados en schemas.py
-7. Tests unitarios preparados en /tests
-8. Configuración del proyecto en pyproject.toml
+Características implementadas:
+1. Sistema de agentes IA con plugins
+2. Manejo de errores centralizado
+3. Sistema de logging configurado
+4. Manejo de sesiones en el chat
+5. Validación de tipos de archivo
+6. Generación de gráficos matemáticos
+7. Base de datos con SQLAlchemy
+8. Tests unitarios y de integración
+9. Documentación Swagger
+10. Sistema de plugins extensible
 
-Tecnologías de soporte:
-FastAPI: Framework web rápido
-Uvicorn: Servidor ASGI
-Pydantic: Validación de datos
-OpenAI SDK: Integración con GPT
-Matplotlib: Generación de gráficos
-Python-dotenv: Manejo de variables de entorno
-Pytest: Framework de testing
+Tecnologías principales:
+- FastAPI: Framework web
+- SQLAlchemy: ORM para base de datos
+- Pydantic: Validación de datos
+- GitHub Models: Integración IA
+- Matplotlib: Visualizaciones
+- Python-dotenv: Variables de entorno
+- Pytest: Testing
 
 Explicación rápida de cada parte
 api/v1/endpoints/:

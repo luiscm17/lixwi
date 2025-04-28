@@ -1,0 +1,6 @@
+Corrige los errores de gramática, ortografía y redacción del siguiente texto manteniendo el sentido original:
+
+Texto:
+{texto}
+
+Texto corregido:

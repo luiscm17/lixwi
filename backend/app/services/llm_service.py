@@ -8,8 +8,8 @@ from app.core.memory import get_session_history, add_message_to_session
 from app.core.prompts import format_system_prompt
 
 # Configuración para GitHub Models
-endpoint = "https://models.github.ai/inference"
-model = "openai/gpt-4o"
+endpoint = settings.GITHUB_MODEL_ENDPOINT
+model = settings.GITHUB_MODEL_NAME
 
 # Inicializar cliente OpenAI con configuración
 client = OpenAI(

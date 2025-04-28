@@ -13,7 +13,7 @@ class UserCreate(BaseModel):
     username: str
     email: str = None
 
-@router.post("/users/", summary="Crear nuevo usuario", tags=["Users"])
+@router.post("/", summary="Crear nuevo usuario", tags=["Users"])
 def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
     try:
         new_user = create_user(db, username=user.username, email=user.email)
