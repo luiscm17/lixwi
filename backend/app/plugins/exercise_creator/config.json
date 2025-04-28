@@ -1,6 +1,6 @@
 {
     "name": "exercise_creator",
-    "description": "Crea un nuevo ejercicio de práctica sobre un tema específico solicitado por el usuario.",
+    "description": "Create a new practice exercise on a specific topic requested by the user.",
     "input_variables": ["topic", "difficulty"],
     "output_variable": "exercise"
 }

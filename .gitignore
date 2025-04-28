@@ -63,6 +63,41 @@ coverage.xml
 *.db
 *.sqlite
 *.sqlite3
+alembic/versions/__pycache__/
+
+# Archivos de test y coverage adicionales
+.coverage.*
+coverage/
+.pytest_cache/
+tests/__pycache__/
+tests/*/__pycache__/
+
+# Archivos de desarrollo
+.vscode/
+.idea/
+*.code-workspace
+
+# Archivos temporales del sistema
+*.swp
+*.swo
+*~
+
+# Archivos de registro adicionales
+*.log.*
+logs/
+
+# Archivos de caché de Python adicionales
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Entorno virtual (complementario)
+.env.local
+.env.*.local
+.env.test
 
 # Archivos de documentación generados
 docs/_build/

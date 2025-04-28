@@ -38,7 +38,8 @@ cd lixwi/backend
 ```
 
 # Configurar entorno virtual
-```python -m venv env
+```bash
+python -m venv env
 env\Scripts\activate
 ```
 # Instalar dependencias
@@ -52,9 +53,11 @@ cp .env.example .env
 ```
 
 ### Variables de Entorno (.env)
-```python
-OPENAI_API_KEY=tu_clave_apiDATABASE_URL=postgresql://user:password@localhost:5432/lixwiAPI_VERSION=1.0.0DEBUG=true
-```
+Copia el archivo .env.example y configura las siguientes variables:
+- LLM_API_KEY: Tu clave de API para el modelo de lenguaje
+- LLM_MODEL_ENDPOINT: URL del endpoint del modelo
+- LLM_MODEL_NAME: Nombre del modelo a utilizar
+- DATABASE_URL: URL de conexión a la base de datos
 
 ## 🏗️ Estructura del Proyecto
 ```

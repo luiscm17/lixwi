@@ -73,7 +73,7 @@ backend/
     cp .env.example .env # Editar .env con tu GITHUB_TOKEN
     ```
 
-# Editar .env con tu GITHUB_TOKEN
+# Editar .env con tu LLM_API_KEY
 
 ## Uso 🚀
 1. Iniciar el servidor:

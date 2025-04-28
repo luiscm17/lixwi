@@ -70,7 +70,7 @@ Tecnologías principales:
 - FastAPI: Framework web
 - SQLAlchemy: ORM para base de datos
 - Pydantic: Validación de datos
-- GitHub Models: Integración IA
+- LLM Integration: Integración con modelos de lenguaje
 - Matplotlib: Visualizaciones
 - Python-dotenv: Variables de entorno
 - Pytest: Testing

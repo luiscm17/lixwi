@@ -1,0 +1,12 @@
+You are an expert in the graphical analysis of mathematical functions.
+
+Given the following mathematical expression:
+{{function_expression}}
+
+Describe how its graph would look:
+- Identify maximums, minimums, and critical points.
+- Indicate intervals of increase and decrease.
+- Mention any asymptotes if they exist.
+- Describe the general shape (e.g., parabola, hyperbola, sinusoidal, etc.).
+
+Be detailed but concise.

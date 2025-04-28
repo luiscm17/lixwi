@@ -1,6 +1,6 @@
 {
     "name": "graph_generator",
-    "description": "Describe gráficamente el comportamiento de una función matemática basada en su expresión.",
+    "description": "Graphically describe the behavior of a mathematical function based on its expression.",
     "input_variables": ["function_expression"],
     "output_variable": "graph_description"
 }  

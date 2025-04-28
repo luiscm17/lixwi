@@ -5,16 +5,16 @@ import os
 
 class Settings(BaseSettings):
     # Configuración de la API
-    API_VERSION: str
-    CORS_ORIGINS: str
+    API_VERSION: str = "v1"
+    CORS_ORIGINS: List[str] = []
     
-    # OpenAI
-    OPENAI_API_KEY: str | None = None
+    # LLM Configuration
+    LLM_API_KEY: str | None = None
+    LLM_MODEL_ENDPOINT: str | None = None
+    LLM_MODEL_NAME: str | None = None
     
-    # GitHub
-    GITHUB_TOKEN: str | None = None
-    GITHUB_MODEL_ENDPOINT: str | None = None
-    GITHUB_MODEL_NAME: str | None = None
+    # Database
+    DATABASE_URL: str
     
     # Rutas
     UPLOAD_DIR: str = str(Path(__file__).parent.parent / "tmp_uploads")

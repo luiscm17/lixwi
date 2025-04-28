@@ -19,13 +19,16 @@ class AgentManager:
         if not plugin:
             return f"Plugin '{plugin_name}' no encontrado."
 
-        # Armar el prompt reemplazando variables
+        # Reemplazar variables en el prompt
         prompt_filled = plugin.prompt
         for var in plugin.input_variables:
             if var not in kwargs:
                 return f"Falta la variable requerida: {var}"
-            prompt_filled = prompt_filled.replace(f"{{{var}}}", str(kwargs[var]))
+            prompt_filled = prompt_filled.replace(f"{{{{{var}}}}}", str(kwargs[var]))
 
-        # Llamar al LLM
-        response = await get_ai_response(prompt_filled)
+        # Llamar al LLM pasando el prompt y las execution_settings
+        response = await get_ai_response(
+            prompt=prompt_filled,
+            execution_settings=plugin.execution_settings
+        )
         return response

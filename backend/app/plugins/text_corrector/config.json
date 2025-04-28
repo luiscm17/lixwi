@@ -1,0 +1,6 @@
+{
+    "name": "text_corrector",
+    "description": "Corrects grammar, spelling, and writing style errors in a given text.",
+    "input_variables": ["texto"],
+    "output_variable": "corrected_text"
+}

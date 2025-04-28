@@ -1,0 +1,6 @@
+Correct the grammar, spelling, and writing style errors in the following text while preserving the original meaning.
+
+Text:
+{{texto}}
+
+Corrected text:
